@@ -1,0 +1,9 @@
+@mixin bg-color($background-color: #8257E5){
+  background-color: $background-color;
+}
+
+@mixin bg($background-color: #8257E5){
+  @include bg-color($background-color);
+  width: 100vw;
+  height: 100vh;
+}
