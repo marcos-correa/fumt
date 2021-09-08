@@ -7,6 +7,12 @@
     border-color: transparent;
     background-color: #774FD1;
   }
+  &:focus,&:active{
+    background-color: #774FD1;
+    box-shadow: none;
+    border: none;
+    border-color: transparent;
+  }
 }
 
 .btn-profesor{
@@ -17,6 +23,11 @@
   &:hover{
     border-color: transparent;
     background-color: #04BF58;
+  }
+  &:focus,&:active{
+    background-color: #04BF58;
+    box-shadow: none;
+    border-color: transparent;
   }
 }
 .btn-student,

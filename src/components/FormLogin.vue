@@ -1,5 +1,5 @@
 <template>
-  <div class="student-login">
+  <div class="form-login">
     <h2 class="c-white">Olá {{typeProf?'professor':'aluno'}}</h2>
 
     <div v-if="typeProf" class="mb-4 c-white">Para acessar a Área do Professor, entre com seus dados institucionais</div>
@@ -75,19 +75,16 @@ import { namespace } from "vuex-class";
 const Auth = namespace("Auth");
 
 @Component
-export default class StudentLogin extends Vue {
+export default class FormLogin extends Vue {
   @Prop({ default: "/" }) private returned!: string;
   private user = {username: "", password:""};
   private loading = false;
   private message = "";
-  @Prop({default: false}) private typeProf!: boolean;
+  private typeProf = false;
 
 
   @Auth.Getter
   private isLoggedIn!: boolean;
-
-  @Auth.Getter
-  private getUser!:any;
 
   @Auth.Action
   private login!: (data: any) => Promise<any>;
@@ -96,13 +93,20 @@ export default class StudentLogin extends Vue {
   private currentUser!: any;
 
   created() {
-    this.typeProf = this.$route.params.type == 'profesor'
-    if (this.isLoggedIn) {
-      let user = localStorage.getItem('user-fumt');
-      if(typeof user === 'string' ){
-        let userId = JSON.parse(user).id;
-        this.$router.push(`/user/${userId}`);
+  this.typeProf = this.$route.params.type == 'profesor'
+    if (this.isLoggedIn && localStorage.getItem('user-fumt')) {
+      if(this.$store.state.Auth.user){
+        let userId = this.$store.state.Auth.user.id
+        if(this.$store.state.Auth.user.profesor){
+          this.$router.push(`/profesor/${userId}`);
+          return
+        }else{
+          this.$router.push(`/student/${userId}`);
+          return
+        }
       }
+    }else{
+      return
     }
   }
 
@@ -119,7 +123,11 @@ export default class StudentLogin extends Vue {
         .then(
           (data) => {
             data.id
-            this.$router.push(`/user/${data.id}`)
+            if(data.profesor){
+              this.$router.push(`/profesor/${data.id}`)
+            }else{
+              this.$router.push(`/student/${data.id}`)
+            }
           },
           (error) => {
             this.loading = false;

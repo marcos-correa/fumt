@@ -22,6 +22,7 @@ import {
   faChalkboardTeacher
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import vuetify from './plugins/vuetify'
 library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt,faChalkboardTeacher);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
@@ -38,5 +39,6 @@ Vue.use(VeeValidate);
 new Vue({
   router,
   store,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')

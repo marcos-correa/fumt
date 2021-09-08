@@ -8,10 +8,6 @@
       <!-- <div class=""></div> -->
       <div class="row w-100">
         <div class="col-5">
-          <!-- <font-awesome-icon :icon="['fas', 'user-secret']" /> -->
-          <!-- <div>
-            <i class="fas fa-chalkboard-teacher"></i>
-          </div> -->
         </div>
         <div class="col-7"></div>
         <div class="col-3">
