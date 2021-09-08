@@ -33,6 +33,12 @@
 .btn-student,
 .btn-profesor{
   box-shadow: none;
+  &.largebutton{
+    font-size: 18px;
+    height: 48px;
+    line-height: 24px;
+
+  }
 }
 
 .btn-home{
