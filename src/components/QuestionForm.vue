@@ -33,7 +33,7 @@
             <div class="d-flex">
               <div>
                 <input
-                  name="enunciado"
+                  :name="'enunciado'+indexQuestion"
                   type="radio"
                   class="btn-check rounded-0"
                   :id="indexQuestion + 'en' + indexAlternative"
@@ -65,7 +65,7 @@
 
 
 <script lang="ts">
-import { Component, Emit, Model, Prop, Vue } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue } from "vue-property-decorator";
 import { BIcon, BIconArrowUp, BIconArrowDown } from "bootstrap-vue";
 
 @Component({
@@ -100,7 +100,7 @@ export default class QuestionForm extends Vue {
       this.emitirQuestao()
     }
   }
-  emitirQuestao() {
+  emitirQuestao(): void {
     this.validQuestion();
     if(this.isValidQuestion){
       this.newquestion();

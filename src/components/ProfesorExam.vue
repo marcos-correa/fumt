@@ -33,7 +33,7 @@
         >
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">{{ prova.title }}</h5>
+              <h5 class="card-title">{{ prova.name }}</h5>
               <p class="card-text">{{ prova.description }}</p>
               <button class="btn btn-primary btn-profesor exam-button">
                 VISUALIZAR PROVA
@@ -228,12 +228,20 @@ export default class ProfesorExam extends Vue {
   validForm = true;
 
   choosedQuestion = 0;
-  criarProva(){
+  async criarProva(){
     if(this.vaLidarForm()){
       this.montarProva()
-      console.log(this.newExamObject)
+      await ExamsService.createExam(this.newExamObject).then((res:any)=>{
+        if(res){
+          this.stage = 'home'
+          this.getProvas()
+        }
+      }
+
+      );
     }
   }
+  
   vaLidarForm() {
     let valid = true
     for(let i = 0; i< this.questions.length;i++){
@@ -254,7 +262,7 @@ export default class ProfesorExam extends Vue {
     this.questions = array;
     console.log('TOTAL QUESTÕES:',this.questions.length);
   }
-  async created(): Promise<any> {
+  created():void {
     // tirar
     // this.montarQuestoes();
 
@@ -268,9 +276,12 @@ export default class ProfesorExam extends Vue {
         marked: false,
       });
     }
+    this.getProvas()
+  }
+  async getProvas(){
     this.provas = await ExamsService.getAllExams();
   }
-  valoresFilho(index: number, event: string) {
+  valoresFilho(index: number, event: string): void {
     let question = JSON.parse(event);
     this.questions[index] = question;
     console.table(question);
