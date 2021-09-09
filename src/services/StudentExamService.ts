@@ -1,0 +1,19 @@
+import axios from "axios";
+
+const API_URL = 'http://localhost:3000/exams'
+
+class StudentExamService{
+  trueLogin = true
+
+  async answerExamById(id:string){
+    return await axios.get(`${API_URL}/${id}/answerExamById`)
+    .then(response =>{
+      return response.data;
+    })
+  }
+
+  
+
+}
+
+export default new StudentExamService();

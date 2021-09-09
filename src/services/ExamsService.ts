@@ -1,10 +1,18 @@
+import { Exam } from "@/interfaces/exam.interface";
 import axios from "axios";
 
 const API_URL = 'http://localhost:3000/exams'
 
 class ExamsSertvice{
   trueLogin = true
+  examToAnswer!: Exam;
 
+  setCurrentExam(exam:string){
+    this.examToAnswer = JSON.parse(exam)
+  }
+  getCurrentExam(): Exam{
+    return this.examToAnswer
+  }
   async getAllExams(){
     return await axios.get(API_URL)
     .then(response =>{
@@ -33,6 +41,13 @@ class ExamsSertvice{
   async getExamByID(id:string){
     return await axios.get(`${API_URL}/${id}`)
     .then(response =>{
+      return response.data;
+    })
+  }
+  async getExamToAnswer(id:string){
+  return await axios.get(`${API_URL}/getExamToAnswer/${id}`)
+    .then(response =>{
+      this.examToAnswer = response.data
       return response.data;
     })
   }

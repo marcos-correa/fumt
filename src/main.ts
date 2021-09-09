@@ -23,6 +23,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import vuetify from './plugins/vuetify'
+
+import VueMoment from 'vue-moment';
+import moment from 'moment-timezone';
 library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt,faChalkboardTeacher);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
@@ -30,6 +33,10 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+// Moment.js
+Vue.use(VueMoment, {
+  moment,
+})
 
 
 
