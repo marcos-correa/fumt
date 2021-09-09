@@ -1,77 +1,81 @@
 <template>
   <div class="form-login">
-    <h2 class="c-white">Olá {{ typeProf ? "professor" : "aluno" }}</h2>
+    <div>
+      <h2 class="c-white">Olá {{ typeProf ? "professor" : "aluno" }}</h2>
 
-    <div v-if="typeProf" class="mb-4 c-white">
-      Para acessar a Área do Professor, entre com seus dados institucionais
-    </div>
-    <div v-if="!typeProf" class="mb-4 c-white">
-      Para acessar a Área do Aluno, entre com seus dados institucionais<br />
-      Caso ainda não possua um cadastro,
-      <a href="#" class="c-white">Cadastre-se aqui</a>
-    </div>
+      <div v-if="typeProf" class="mb-4 c-white">
+        Para acessar a Área do Professor, entre com seus dados institucionais
+      </div>
+      <div v-if="!typeProf" class="mb-4 c-white">
+        Para acessar a Área do Aluno, entre com seus dados institucionais<br />
+        Caso ainda não possua um cadastro,
+        <a href="#" class="c-white">Cadastre-se aqui</a>
+      </div>
 
-    <form name="form" @submit.prevent="clickLogin">
-      <div class="form-group">
-        <div class="d-flex align-items-center mb-4">
-          <label class="label-text" for="username"> email </label>
-          <input
-            v-model="user.username"
-            v-validate="'required'"
-            type="text"
-            name="username"
-            class="form-control"
-          />
+      <form name="form" @submit.prevent="clickLogin">
+        <div class="form-group">
+          <div class="d-flex align-items-center mb-4">
+            <label class="label-text" for="username"> email </label>
+            <input
+              v-model="user.username"
+              v-validate="'required'"
+              type="text"
+              name="username"
+              class="form-control"
+            />
+          </div>
+          <div
+            v-if="errors.has('username')"
+            class="alert alert-danger"
+            role="alert"
+          >
+            É necessário informar um email
+          </div>
         </div>
-        <div
-          v-if="errors.has('username')"
-          class="alert alert-danger"
-          role="alert"
-        >
-          É necessário informar um email
+        <div class="form-group">
+          <div class="d-flex align-items-center mb-4">
+            <label class="label-text" for="password">senha</label>
+            <input
+              v-model="user.password"
+              v-validate="'required'"
+              type="password"
+              class="form-control"
+              name="password"
+            />
+          </div>
+          <div
+            v-if="errors.has('password')"
+            class="alert alert-danger"
+            role="alert"
+          >
+            É necessário informar a senha
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="d-flex align-items-center mb-4">
-          <label class="label-text" for="password">senha</label>
-          <input
-            v-model="user.password"
-            v-validate="'required'"
-            type="password"
-            class="form-control"
-            name="password"
-          />
+        <div class="form-group">
+          <button
+            class="btn btn-primary btn-student"
+            v-bind:class="[
+              { 'btn-student': !typeProf },
+              { 'btn-profesor': typeProf },
+            ]"
+            :disabled="loading"
+          >
+            <span
+              v-show="loading"
+              class="spinner-border spinner-border-sm"
+            ></span>
+            <span>ENTRAR</span>
+          </button>
         </div>
-        <div
-          v-if="errors.has('password')"
-          class="alert alert-danger"
-          role="alert"
-        >
-          É necessário informar a senha
+        <div class="form-group">
+          <div v-if="message" class="alert alert-danger mt-3" role="alert">
+            Dados não conferem
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <button
-          class="btn btn-primary btn-student"
-          v-bind:class="[
-            { 'btn-student': !typeProf },
-            { 'btn-profesor': typeProf },
-          ]"
-          :disabled="loading"
-        >
-          <span
-            v-show="loading"
-            class="spinner-border spinner-border-sm"
-          ></span>
-          <span>ENTRAR</span>
-        </button>
-      </div>
-      <div class="form-group">
-        <div v-if="message" class="alert alert-danger" role="alert">
-          <!-- {{ message }} -->
-        </div>
-      </div>
-    </form>
+      </form>
+
+      
+    </div>
   </div>
 </template>
 

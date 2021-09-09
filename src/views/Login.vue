@@ -12,10 +12,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Return from "@/components/Return.vue"; // @ is an alias to /src
 import FormLogin from "@/components/FormLogin.vue";
-import AuthService from "@/services/AuthService";
+import Return from "@/components/Return.vue"; // @ is an alias to /src
+import { Component, Vue } from "vue-property-decorator";
 @Component({
   components: {
     Return,
@@ -43,7 +42,6 @@ export default class Login extends Vue {
   }
 }
 .wrapper-login {
-  // @include bg-color(#774FD1);
   @include bg-color(#8257e5);
   border-radius: 20px;
   padding: 40px;
