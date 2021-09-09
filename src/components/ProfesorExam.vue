@@ -249,7 +249,6 @@
             
               <v-divider></v-divider>
               <p>Questões</p>
-              <!-- {{viewExam.questions}} -->
               <div
                 v-for="(question, indexq) of viewExam.questions"
                 :key="indexq"
