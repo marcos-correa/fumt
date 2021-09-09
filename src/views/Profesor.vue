@@ -2,35 +2,8 @@
   <div class="user-area">
 
     <UserArea></UserArea>
-    
     <ProfesorExam></ProfesorExam>
-<!-- 
-    <div class="user-area-body">
-      <h2 class="title">
-        Provas disponíveis
-      </h2>
-      <div class="title">Você poderá realizar as provas disponíveis, e ao final verá sua nota</div>
-
-        <div class="row mt-2">
-          <div  v-for="prova of provas" :key="prova" class="col-sm-6 mt-3">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">{{prova.title}}</h5>
-                <p class="card-text">{{prova.description}}</p>
-                <button @click="goToExam(prova._id)" class="btn btn-primary btn-student exam-button">REALIZAR PROVA</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-5">
-          <div class="col-sm-4 offset-8">
-            <button disabled class="btn btn-gray btn-student w-100 history-button">HISTÓRICO DE PROVAS</button>
-          </div>
-        </div>
-        
-
-    </div> -->
-   
+    
   </div>
 </template>
 

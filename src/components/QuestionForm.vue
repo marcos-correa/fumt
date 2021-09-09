@@ -3,7 +3,7 @@
     <div class="form-group my-4">
       <h4>Questão {{ indexQuestion + 1 }}</h4>
       <label for="enunciate">Enunciado da questão</label>
-      <div class="text-danger" v-if="errors['enunciate']">
+      <div class="text-danger" v-if="errorsQuestionForm['enunciate']">
         É necessário preencher o enunciado
       </div>
 
@@ -19,10 +19,10 @@
       <div class="btn-group-vertical" role="group">
         <div class="form-group mt-3">
           <label>Preencha as alternativas e selecione qual é a correta</label>
-          <div class="text-danger" v-if="errors['alternatives']">
+          <div class="text-danger" v-if="errorsQuestionForm['alternatives']">
             É necessário preencher todas as alternativas
           </div>
-          <div class="text-danger" v-if="errors['correct']">
+          <div class="text-danger" v-if="errorsQuestionForm['correct']">
             É necessário marcar uma alternativa correta
           </div>
           <div
@@ -83,7 +83,7 @@ export default class QuestionForm extends Vue {
   }
   alternatives = [{ description: "", correct: false, marked: false }];
   question = { enunciate: "", alternatives: this.alternatives };
-  errors = { correct: false, alternatives: false, enunciate: false };
+  errorsQuestionForm = { correct: false, alternatives: false, enunciate: false };
   isValidQuestion = false
 
   async created(): Promise<any> {
@@ -134,14 +134,14 @@ export default class QuestionForm extends Vue {
 
 
 
-  resetErrors() {
-    this.errors["correct"] = false;
-    this.errors["alternatives"] = false;
-    this.errors["enunciate"] = false;
+  reseterrorsQuestionForm() {
+    this.errorsQuestionForm["correct"] = false;
+    this.errorsQuestionForm["alternatives"] = false;
+    this.errorsQuestionForm["enunciate"] = false;
   }
   validEnunciate() {
     if (!this.question.enunciate) {
-      this.errors["enunciate"] = true;
+      this.errorsQuestionForm["enunciate"] = true;
       return false;
     }
     return true;
@@ -149,7 +149,7 @@ export default class QuestionForm extends Vue {
   validAlternatives() {
     this.alternatives.forEach((alt) => {
       if (!alt.description) {
-        this.errors["alternatives"] = true;
+        this.errorsQuestionForm["alternatives"] = true;
         return false
       }
     });
@@ -163,13 +163,13 @@ export default class QuestionForm extends Vue {
       }
     });
     if (missedCorrect) {
-      this.errors["correct"] = true;
+      this.errorsQuestionForm["correct"] = true;
       return false
     }
     return true
   }
   validQuestion() {
-    this.resetErrors();
+    this.reseterrorsQuestionForm();
     if (!this.validEnunciate() || !this.validCorrect() || !this.validAlternatives() ) {
       return false;
     }

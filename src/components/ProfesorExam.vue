@@ -7,7 +7,6 @@
       <div class="c-white">
         Você poderá cadastrar as provas e visualizar as provas já cadastradas
       </div>
-
       <div class="row mt-2 mb-5">
         <div class="col-sm-6 mt-3">
           <div class="card">
@@ -33,9 +32,28 @@
         >
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">{{ prova.name }}</h5>
-              <p class="card-text">{{ prova.description }}</p>
-              <button class="btn btn-primary btn-profesor exam-button">
+              <div class="d-flex">
+                <div>
+                  <h5 class="card-title">{{ prova.name }}</h5>
+                  <p class="card-text">{{ prova.description }}</p>
+                </div>
+                <button
+                  @click="deleteExamById(prova._id)"
+                  class="btn c-white ms-auto p-0
+                  "
+                  style="font-size: 24px; height:max-content"
+                >
+                  <b-icon
+                    icon="trash"
+                    class="rounded-circle bg-danger p-1"
+                  ></b-icon>
+                </button>
+              </div>
+
+              <button
+                @click="showExamById(prova._id)"
+                class="btn btn-primary btn-profesor exam-button"
+              >
                 VISUALIZAR PROVA
               </button>
             </div>
@@ -140,10 +158,10 @@
 
       <div class="d-flex justify-content-between mt-4 mb-5">
         <div>
-          <button class="btn btn-primary btn-profesor btn-large">VOLTAR</button>
+          <button @click="()=>this.stage='home'" class="btn btn-primary btn-profesor btn-large">VOLTAR</button>
         </div>
-        <div v-if="errors.length > 0">
-          <span v-for="(error, index) of errors" :key="index">
+        <div v-if="errorsProfExam.length > 0">
+          <span v-for="(error, index) of errorsProfExam" :key="index">
             <div class="text-danger">{{ error }}</div>
           </span>
         </div>
@@ -159,7 +177,7 @@
     </div>
 
     <!-- Second -->
-    <div v-if="stage === 'second'" class="profesor-exam-body">
+    <div v-if="stage === 'second' && !showModal" class="profesor-exam-body">
       <h2 class="title">Questões</h2>
 
       <div v-if="totalQuestions > 1" class="title">
@@ -168,12 +186,12 @@
       <div v-if="totalQuestions == 1" class="title">
         Preencha a questão única da prova
       </div>
-
       <div class="card mt-4">
         <div class="card-body">
+          <v-divider></v-divider>
           <div v-for="(question, index) of this.questions" :key="index">
             <QuestionForm
-              :ref="'qform'+index"
+              :ref="'qform' + index"
               :indexQuestion="index"
               v-on:newquestion="valoresFilho(index, $event)"
             ></QuestionForm>
@@ -183,14 +201,74 @@
 
       <div class="d-flex justify-content-between my-4">
         <div>
-          <div v-if="!validForm" class="text-danger">Ainda existem campos obrigatórios que não foram preenchidos</div>
+          <button @click="()=>this.stage='first'" class="btn btn-primary btn-profesor btn-large">VOLTAR</button>
         </div>
-        <button class="btn btn-primary btn-profesor btn-large" @click="criarProva()">CRIAR PROVA</button>
+        <div>
+          <div v-if="!validForm" class="text-danger">
+            Ainda existem campos obrigatórios que não foram preenchidos
+          </div>
+        </div>
+        <button
+          class="btn btn-primary btn-profesor btn-large"
+          @click="criarProva()"
+        >
+          CRIAR PROVA
+        </button>
       </div>
-
     </div>
 
-    <div class="profesor-exam-body" style="position: relative"></div>
+    <!-- Modal -->
+    <div v-if="showModal" class="profesor-exam-body modal-pe">
+      <div v-if="showModal" class="modalPE">
+        <div class="mod-card-content">
+          <div class="card">
+            <div class="d-flex pt-2 ps-3 pe-1">
+              <div>
+                <h3>{{ viewExam.name }}</h3>
+                <h5>{{ viewExam.description }}</h5>
+                <div v-if="viewExam.created_at">
+                  <div>
+                  criado em: 
+                  </div>
+                  {{viewExam.created_at}}
+                </div>
+              </div>
+              <button
+                @click="toogleModal()"
+                class="btn c-white ms-auto"
+                style="font-size: 30px"
+              >
+                <b-icon
+                  icon="x"
+                  class="rounded-circle bg-secondary p-0"
+                ></b-icon>
+              </button>
+            </div>
+            <v-divider></v-divider>
+            <div class="card-body" style="overflow-y: scroll; height: 69vh">
+              <p>Questões</p>
+              <!-- {{viewExam.questions}} -->
+              <div
+                v-for="(question, indexq) of viewExam.questions"
+                :key="indexq"
+                class=""
+              >
+                {{ indexq + 1 }}. {{ question.enunciate }}<br />
+                <ul>
+                  <li
+                    v-for="(alt, indexa) of question.alternatives"
+                    :key="indexa"
+                  >
+                    <p v-if="alt.correct" class="text-success"><strong>{{ alt.description }}</strong></p>
+                    <p v-if="!alt.correct" >{{ alt.description }}</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -211,7 +289,10 @@ import QuestionForm from "./QuestionForm.vue";
 export default class ProfesorExam extends Vue {
   provas = [];
   alternatives = [{ description: "", correct: false, marked: false }];
-  errors = [""];
+  errorsProfExam = [""];
+
+  viewExam = {};
+  showModal = false;
 
   stage = "home";
   // First
@@ -221,38 +302,53 @@ export default class ProfesorExam extends Vue {
   questions = [{ enunciate: "", alternatives: this.alternatives }];
   examValue = 10;
 
-
   // Second
   quantityArray = [{}];
   newExamObject = {};
   validForm = true;
 
   choosedQuestion = 0;
-  async criarProva(){
-    if(this.vaLidarForm()){
-      this.montarProva()
-      await ExamsService.createExam(this.newExamObject).then((res:any)=>{
-        if(res){
-          this.stage = 'home'
-          this.getProvas()
+  async criarProva() {
+    if (this.vaLidarForm()) {
+      this.montarProva();
+      await ExamsService.createExam(this.newExamObject).then((res: any) => {
+        if (res) {
+          this.stage = "home";
+          this.getProvas();
         }
-      }
-
-      );
+      });
     }
   }
-  
+  async deleteExamById(id: string) {
+    if (id) {
+      await ExamsService.deleteExamByID(id);
+    }
+    this.getProvas();
+  }
+
+  async showExamById(id: string) {
+    if (id) {
+      await ExamsService.getExamByID(id).then((res) => {
+        this.viewExam = res;
+        this.showModal = true;
+      });
+    }
+  }
+  toogleModal() {
+    this.showModal = !this.showModal;
+  }
+
   vaLidarForm() {
-    let valid = true
-    for(let i = 0; i< this.questions.length;i++){
-      let element = eval(`this.$refs.qform${i}`)
-      element[0].validarQuest()
-      if(!element[0].isValidQuestion){
-        valid = false
+    let valid = true;
+    for (let i = 0; i < this.questions.length; i++) {
+      let element = eval(`this.$refs.qform${i}`);
+      element[0].validarQuest();
+      if (!element[0].isValidQuestion) {
+        valid = false;
       }
     }
-    this.validForm = valid
-    return valid
+    this.validForm = valid;
+    return valid;
   }
   setTotalQuestions(event: any) {
     let array = [];
@@ -260,12 +356,8 @@ export default class ProfesorExam extends Vue {
       array.push({ enunciate: "", alternatives: this.alternatives });
     }
     this.questions = array;
-    console.log('TOTAL QUESTÕES:',this.questions.length);
   }
-  created():void {
-    // tirar
-    // this.montarQuestoes();
-
+  created(): void {
     for (let i = this.quantityArray.length; i < 10; i++) {
       this.quantityArray.push({});
     }
@@ -276,9 +368,9 @@ export default class ProfesorExam extends Vue {
         marked: false,
       });
     }
-    this.getProvas()
+    this.getProvas();
   }
-  async getProvas(){
+  async getProvas() {
     this.provas = await ExamsService.getAllExams();
   }
   valoresFilho(index: number, event: string): void {
@@ -289,7 +381,6 @@ export default class ProfesorExam extends Vue {
   newExam(): void {
     this.stage = "first";
   }
-
 
   resetFirst(): void {
     this.examName = "";
@@ -310,11 +401,11 @@ export default class ProfesorExam extends Vue {
       }
     }
     if (nextstage == "third") {
-     this.criarProva()
+      this.criarProva();
     }
   }
   validProvaFirstStage(): boolean {
-    this.errors = [];
+    this.errorsProfExam = [];
     if (
       this.examName &&
       this.examDescription &&
@@ -324,22 +415,17 @@ export default class ProfesorExam extends Vue {
       return true;
     }
     if (!this.examName) {
-      this.errors.push("A prova precisa ter um nome");
+      this.errorsProfExam.push("A prova precisa ter um nome");
     }
     if (!this.examDescription) {
-      this.errors.push("A prova precisa ter uma descrição");
+      this.errorsProfExam.push("A prova precisa ter uma descrição");
     }
     if (!this.examValue) {
-      this.errors.push("A prova precisa ter um valor total");
+      this.errorsProfExam.push("A prova precisa ter um valor total");
     }
 
     return false;
   }
-  // montarQuestoes() {
-  //   for (let i = 0; i < this.totalQuestions; i++) {
-  //     this.questions.push({ enunciate: "", alternatives: this.alternatives });
-  //   }
-  // }
 
   montarProva(): void {
     this.newExamObject = {
@@ -348,30 +434,28 @@ export default class ProfesorExam extends Vue {
       value: this.examValue,
       totalQuestions: this.totalQuestions,
       valuePerQuestion: (this.examValue / this.totalQuestions).toFixed(2),
-      questions:this.questions
+      questions: this.questions,
     };
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "@/assets/scss/_mixins.scss";
-// .user-area {
-//   height: 100vh;
-//   &-cont {
-//     align-items: baseline;
-//     background-color: #8257e5;
-//     height: 33vh;
-//     &.prof {
-//       background-color: #04bf58;
-//     }
-//   }
-// }
-// .username-text {
-//   color: white;
-//   font-size: 14px;
-// }
+
+.modalPE {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background-color: #00000090;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .mod-card-content {
+    height: 90vh;
+    width: 50vw;
+  }
+}
 
 .btn-student,
 .btn-profesor {
@@ -392,6 +476,11 @@ export default class ProfesorExam extends Vue {
   width: 100vw;
   .title {
     color: white;
+  }
+  &.modal-pe {
+    top: 0;
+    padding: 0;
+    width: 100vw;
   }
 }
 .exam-button {

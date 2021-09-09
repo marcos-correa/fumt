@@ -30,6 +30,15 @@ class ExamsSertvice{
     })
   }
 
+  async getExamByID(id:string){
+    return await axios.get(`${API_URL}/${id}`)
+    .then(response =>{
+      return response.data;
+    })
+  }
+
+  
+
 }
 
 export default new ExamsSertvice();
