@@ -41,13 +41,6 @@
 
               <div class="d-flex align-items-end mt-3">
                 <button
-                  @click="getAnswerExamByID(prova._id)"
-                  class="btn btn-primary btn-student exam-button"
-                >
-                  visualizar resposta
-                </button>
-
-                <button
                   @click="getExamToAnswer(prova._id)"
                   class="btn btn-primary btn-student exam-button"
                 >
