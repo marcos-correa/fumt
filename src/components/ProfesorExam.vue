@@ -225,7 +225,6 @@
             <div class="d-flex pt-2 ps-3 pe-1">
               <div>
                 <h3>{{ viewExam.name }}</h3>
-                <h5>{{ viewExam.description }}</h5>
                 <div v-if="viewExam.created_at">
                   <div>
                   criado em: 
@@ -246,6 +245,9 @@
             </div>
             <v-divider></v-divider>
             <div class="card-body" style="overflow-y: scroll; height: 69vh">
+                <h5>{{ viewExam.description }}</h5>
+            
+              <v-divider></v-divider>
               <p>Questões</p>
               <!-- {{viewExam.questions}} -->
               <div

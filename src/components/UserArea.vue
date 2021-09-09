@@ -22,6 +22,7 @@ import AuthService from '@/services/AuthService';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Return from './Return.vue';
 import ExamsService from '@/services/ExamsService'
+import UserService from '@/services/UserService';
 // Return
 
 @Component({
@@ -36,6 +37,8 @@ export default class UserArea extends Vue {
   username!:string
   name!:string
   async created(){
+    UserService.setUser(this.$store.state.Auth.user)
+
     this.username = this.$store.state.Auth.user.username
     this.name = this.$store.state.Auth.user.name
     this.provas = await ExamsService.getAllExams()

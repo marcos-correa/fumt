@@ -1,4 +1,5 @@
 import axios from "axios";
+import UserService from "./UserService";
 
 const API_URL = 'http://localhost:3000/auth/'
 
@@ -11,6 +12,7 @@ class AuthService{
       password
     })
     .then(response =>{
+      UserService.setUser(response.data)
       localStorage.setItem('user-fumt', JSON.stringify(response.data));
       if(response.data.accessTokes){
         localStorage.setItem('user-fumt', JSON.stringify(response.data));

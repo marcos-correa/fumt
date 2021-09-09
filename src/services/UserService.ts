@@ -1,22 +1,26 @@
+import { User } from './../interfaces/user.interface';
 
 import { Vue } from "vue-property-decorator";
-
 class UserService extends Vue{
+  user!:User
 
+  setUser(user:any){
+    this.user = user
+  }
   getUser(){
-    return this.$store.state.Auth.user
+    return this.user
   }
 
-  getUserName(){
-    return this.$store.state.Auth.user.name
+  getNameUser(){
+    return this.user.name
   }
 
   getUsername(){
-    return this.$store.state.Auth.user.username;
+    return this.user.username;
   }
   
   getUserID(){
-    return this.$store.state.Auth.user.id
+    return this.user.id
   }
 }
 

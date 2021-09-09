@@ -87,7 +87,7 @@ export default class QuestionFormAnswer extends Vue {
     this.question.alternatives.forEach((alt) => {
       alt.marked = false;
     });
-    this.indexQuestion = indexAlternatives
+    this.indexAnswer = indexAlternatives
     this.question.alternatives[indexAlternatives].marked = event.target.checked;
     if(this.isValidAnswer()){
       this.emitirQuestao()
