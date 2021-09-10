@@ -1,7 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Permanent+Marker&family=Poppins:wght@300;400;500;600&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
 $background-color:#8257E5;
 body{
   font-family: 'Poppins', sans-serif;
+}
+.fumt-text-logo{
+  font-family: 'Permanent Marker', cursive;
+  font-size: 140px;
+  // border: 1px solid black;
 }
 #app {
   font-family: 'Poppins', sans-serif;;

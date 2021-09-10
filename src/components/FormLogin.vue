@@ -3,13 +3,16 @@
     <div>
       <h2 class="c-white">Olá {{ typeProf ? "professor" : "aluno" }}</h2>
 
-      <div v-if="typeProf" class="mb-4 c-white">
+      <div v-if="typeProf" class="c-white">
         Para acessar a Área do Professor, entre com seus dados institucionais
       </div>
-      <div v-if="!typeProf" class="mb-4 c-white">
-        Para acessar a Área do Aluno, entre com seus dados institucionais<br />
+      <div v-if="!typeProf" class=" c-white">
+        Para acessar a Área do Aluno, entre com seus dados institucionais
+
+      </div>
+      <div class="mb-4 c-white">
         Caso ainda não possua um cadastro,
-        <a href="#" class="c-white">Cadastre-se aqui</a>
+      <a @click="()=> this.$router.push(registerpath)" class="c-white" style="cursor:pointer">Cadastre-se aqui</a>
       </div>
 
       <form name="form" @submit.prevent="clickLogin">
@@ -93,6 +96,7 @@ export default class FormLogin extends Vue {
   private loading = false;
   private message = "";
   private typeProf = false;
+  registerpath = '/register/'
 
   @Auth.Getter
   private isLoggedIn!: boolean;
@@ -105,6 +109,7 @@ export default class FormLogin extends Vue {
 
   created() {
     this.typeProf = this.$route.params.type == "profesor";
+    this.registerpath += this.$route.params.type
     if (this.isLoggedIn && localStorage.getItem("user-fumt")) {
       if (this.$store.state.Auth.user) {
         UserService.setUser(this.$store.state.Auth.user);

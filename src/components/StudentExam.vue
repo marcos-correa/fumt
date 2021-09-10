@@ -265,7 +265,7 @@ import AnswerView from "./AnswerView.vue";
   },
 })
 export default class StudentExam extends Vue {
-  provas = [];
+  provas!: any[];
   answers = [];
   stage = "home";
   currentExam!: Exam;
@@ -296,11 +296,13 @@ export default class StudentExam extends Vue {
       _answ.push(ans._id);
     });
     let _provas = await ExamsService.getAllExams();
+    let new_provas: any[] = []
     _provas.forEach((prov: any) => {
       if (!_answ.includes(prov._id)) {
-        this.provas.push(prov);
+        new_provas.push(prov);
       }
     });
+    this.provas = new_provas
     this.answers = await ExamsService.getAnswredExamsByStudentId(
       UserService.getUserID()
     );

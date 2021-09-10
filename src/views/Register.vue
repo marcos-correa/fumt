@@ -5,7 +5,7 @@
     </div>
     <div class="d-flex justify-content-center mt-5">
       <div class="wrapper-login" v-bind:class="{ prof: typeProf }">
-        <FormLogin></FormLogin>
+        <FormRegister></FormRegister>
       </div>
     </div>
   </div>
@@ -13,12 +13,14 @@
 
 <script lang="ts">
 import FormLogin from "@/components/FormLogin.vue";
+import FormRegister from "@/components/FormRegister.vue";
 import Return from "@/components/Return.vue"; // @ is an alias to /src
 import { Component, Vue } from "vue-property-decorator";
 @Component({
   components: {
     Return,
     FormLogin,
+    FormRegister
   },
 })
 export default class Login extends Vue {

@@ -3,18 +3,18 @@
 
 
     <div class="container-fluid h-100 d-flex align-items-center home-app">
-      <!-- <div style="position:absolute" class="w-100 pr-3">
-
-        <UserArea></UserArea>
-      </div> -->
-      <div class="row w-100" style="  position: absolute;z-index: 99;">
+      <div class="row w-100 px-5" style="position: absolute;z-index: 99;">
         <div class="col-5">
-          <!-- <v-btn color="error" @click="overlay = !overlay">
-            Show Overlay
-          </v-btn> -->
+          <p class="c-white fumt-text-logo">FUMT</p>
+          <p class="c-white" style="font-size:32px">
+            Sistema acadêmico de provas
+          </p>
         </div>
-        <div class="col-7"></div>
-        <div class="col-3">
+        <div class="col-7">
+          <img src = "@/assets/images/fumt-home.svg" alt="FUMT"/>
+
+        </div>
+        <div class="col-3 mt-5">
           <v-overlay :value="overlay"></v-overlay>
           <router-link :to="'/login/student'">
             <button class="btn btn-primary btn-student btn-home">
@@ -25,7 +25,7 @@
             </button>
           </router-link>
         </div>
-        <div class="col-3">
+        <div class="col-3 mt-5">
           <router-link :to="'/login/profesor'">
             <button class="btn btn-primary btn-profesor btn-home">
               PROFESSOR
@@ -36,18 +36,14 @@
     </div>
   </div>
 
-  <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
-  <!-- </div> -->
 </template>
 
 <script lang="ts">
 import UserArea from "@/components/UserArea.vue";
 import { Component, Vue } from "vue-property-decorator";
-// import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
 @Component({
   components: {
     UserArea
-    // HelloWorld,
   },
 })
 export default class Home extends Vue {
