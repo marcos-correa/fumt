@@ -34,8 +34,11 @@
     "vuex-class": "^0.3.2",
     "vuex-module-decorators": "^1.0.1",
 
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
     "vue-cli-plugin-vuetify": "~2.4.2",
-    "vuetify-loader": "^1.7.0"
+    "vuetify-loader": "^1.7.0",
+    "sass-loader": "^10.0.0"
     
   },
   "devDependencies": {
