@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:3000/exams'
+const API_URL = process.env.VUE_APP_FUMT_API_LINK+'/exams'
 
 class StudentExamService{
   trueLogin = true

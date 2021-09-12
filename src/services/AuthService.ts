@@ -1,7 +1,8 @@
 import axios from "axios";
 import UserService from "./UserService";
 
-const API_URL = 'http://localhost:3000/auth/'
+const API_URL = process.env.VUE_APP_FUMT_API_LINK+'/auth/'
+
 
 class AuthService{
   trueLogin = true

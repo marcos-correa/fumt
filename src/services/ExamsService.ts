@@ -2,8 +2,12 @@ import { AnswerExam } from "@/interfaces/answerexam.interface";
 import { Exam } from "@/interfaces/exam.interface";
 import axios from "axios";
 
-const API_URL = 'http://localhost:3000/exams'
-const API_URL_ANSWER = 'http://localhost:3000/answers'
+// const API_URL = 'http://localhost:3000/exams'
+// const API_URL_ANSWER = 'http://localhost:3000/answers'
+
+const API_URL = process.env.VUE_APP_FUMT_API_LINK+'/exams'
+const API_URL_ANSWER = process.env.VUE_APP_FUMT_API_LINK+'/answers'
+
 
 class ExamsSertvice{
   trueLogin = true
