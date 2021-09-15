@@ -1,7 +1,7 @@
 
 # FUMT
 ## Sistema acadêmico de provas
-#### Disponibilizado em: **[fumt-app.herokuapp.com](fumt-app.herokuapp.com)**
+#### Disponibilizado em: [fumt-app.herokuapp.com](http://fumt-app.herokuapp.com/)
 O sistema acadêmico de provas FUMT permite que  professores montem provas que podem ser respondidas por alunos.
 
 Ao final da criação de uma prova, o professor verá uma lista com todas as provas criadas, e então poderá visualizar as respostas cadastradas e excluí-las.
